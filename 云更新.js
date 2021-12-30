@@ -2,13 +2,13 @@
 ui.layout(
     <frame w="*" h="*">
         <button layout_gravity="left|top" margin="1" w="auto" h="auto" id="cc_gx" text="cc"/>
-        <button layout_gravity="left|top" margin="1 41" w="auto" h="auto" id="cc1_gx" text="cc1"/>
-        <button layout_gravity="right|bottom" w="auto" h="auto" id="gx_list" text="更新"/>
+        <button layout_gravity="left|top" margin="1 51" w="auto" h="auto" id="cc1_gx" text="cc1"/>
+        <button layout_gravity="right|bottom" w="auto" h="auto" id="gx_list" text="云更新"/>
     </frame>
 );
 
 ui.cc_gx.click(function(){
-    //通过getText()获取输入的内容2
+    //通过getText()获取输入的内容
     var js_name = ui.cc_gx.getText();
     //ui.finish
         threads.start(function() {
