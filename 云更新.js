@@ -3,7 +3,7 @@ ui.layout(
     <frame w="*" h="*">
         <button layout_gravity="left|top" margin="1" w="auto" h="auto" id="cc_gx" text="cc"/>
         <button layout_gravity="left|top" margin="1 41" w="auto" h="auto" id="cc1_gx" text="cc1"/>
-        <button layout_gravity="right|bottom" w="auto" h="auto" id="gx_list" text="更新"/>
+        <button layout_gravity="center" w="auto" h="auto" id="gx_list" text="更新"/>
     </frame>
 );
 
@@ -57,9 +57,19 @@ function x_z_jb (js_name){
         }
     });
     var html_r=r.body.string();
-    //log(html_r);
+    //log(html_r)
     if(r.statusCode==200){
         //提取网页内容后,交给其它需要的程序处理;
+        //提取字符串之前的所有字符
+        let index = html_r.lastIndexOf("</table")
+        html_r =html_r.substring(0,index);
+        //提取字符串之后的所有字符
+        index = html_r.lastIndexOf("<table");
+        html_r =html_r.substring(index+1,html_r.length);
+
+        //清除空格回车等
+        // html_r=html_r.replace(/\s*/g,"")       
+        // html_r = html_r.replace(/[\r\n]/g,"");
         return t_q_wb(html_r);
         
     }else{return "none"};
@@ -68,48 +78,62 @@ function x_z_jb (js_name){
 
 //处理网页文件内容,去掉不需要的标签代码;
 function t_q_wb (html_r){
+    log(html_r);
     //这网络上做一个提取的操作,不然都是嵌入的代码,非常乱杂;
-        //log(html_r);
-        //提取两个字串之间的字符;
-        //html_r =html_r.match(/span class=pl-s1>(\S*)<\/span>/)[1];
-        //var text =html_r.replace(/<[^>]*>|/g,"");
-        //一个全局变量可用;
-        //var sTr = "<p><img src=\"/media/goods/images/2_20170719161405_249.jpg\" title=\"\" alt=\"2.jpg\"/></p><p><img src=\"/media/goods/images/2_20170719161414_628.jpg\" title=\"\" alt=\"2.jpg\"/></p><p><img src=\"/media/goods/images/2_20170719161435_381.jpg\" title=\"\" alt=\"2.jpg\"/></p>";
+        //var sTr = "<p><img src=\"/media/goods/images/2_20170719161405_249.jpg\" title=\"\" alt=\"2";
         //var regex = "media";//此变量可以变动;
         //sTr = sTr.replace(new RegExp(regex, 'g'), 'AAA');//将regex=midia换成AAA;
-    if(html_r!="none"){
+    if(html_r!="none"||html_r!=null){
         //做10万条代码的准备,不太可能写这么多了吧?;
-        const re=/<span class=pl-(\S*)<\/span>/g;
+        //const re=/<span class=pl-(\S*)<\/span>/g;
         var str_txt_all="";
-        var str1 =html_r.match(re);
-        //log("str1",str1);
-        for(ci=0;ci<str1.length;ci++){
-            var str_txt=str1[ci];
+        const re_LC=/LC/g;
+        var LC_cisu_arr =html_r.match(re_LC);
+        if(LC_cisu_arr==null){log("提取失败");exit();}else{log("TD_cisu_arr",LC_cisu_arr.length);}
+        for(ci=1;ci<1/*LC_cisu_arr.length+1*/;ci++){
+            let lc_str="LC"+ci
+            let index_lc= html_r.indexOf(lc_str)
+            let index_tr= html_r.indexOf("</tr>")+6
+            var str_txt=html_r.substring(index_lc,index_tr)
+            html_r =html_r.substring(index_tr+1,html_r.length)
+            //log(str_txt)
             //有注释直接跳过;
             if(str_txt.indexOf("//")!=-1){continue;};
-            log(ci,"str_txt",str_txt);
-            v_txt=["-kos","-cce","-ent","-s1","-c1","-en","-s","-c","-k","-v"];
-            for(m=0;m<v_txt.length;m++){
-                var regex = v_txt[m];
-                //将regex=midia换成A;
-                str_txt = str_txt.replace(new RegExp(regex, 'g'), 'A');
-            };
+            //log(ci,"str_txt",str_txt);
+            // v_txt=[lc_str,"-kos","-cce","-ent","-s1","-c1","-en","-s","-c","-k","-v"];
+            
+            // for(m=0;m<v_txt.length;m++){
+            //     var regex = v_txt[m];
+            //     //将regex=midia换成A;
+            //     str_txt = str_txt.replace(new RegExp(regex, 'g'), 'A');
+            // };
+            //log(ci+"=>",str_txt)
+            str_txt = str_txt.replace(/<td .*?-line">/g, '')
+            str_txt = str_txt.replace(/<spa.*?>/g, '')
+            str_txt = str_txt.replace(/<\/s[a-z]{3}>/g, '')
+            str_txt = str_txt.replace(/<\/td>/, '\n');
+            str_txt = str_txt.replace(/<\/tr>/, '');
             str_txt = str_txt.replace(/&lt;/g, '<');
             str_txt = str_txt.replace(/&gt;/g, '>');
             str_txt = str_txt.replace(/&quot;/g, '"');
-            str_txt = str_txt.replace(/&#39;/g, '"');
-            str_txt = str_txt.replace(/<span class=plA>/g, '');
-            str_txt = str_txt.replace(/<\/span>/g, '');
-            
+            str_txt = str_txt.replace(/&#39;/g, "'");
+            str_txt = str_txt.replace(/&amp;/g, '&');
+            //str_txt = str_txt.replace(/&nbsp;/g, '');
+            //清右边空白
+            str_txt =str_txt.replace(/(\s*$)/g,"");
+            //str_txt=str_txt.substring(1,str_txt.indexOf("\n")+2)
+            //log(ci+"==>",str_txt);
             if(str_txt_all==""){
                 str_txt_all=str_txt;
             }else{
-                str_txt_all=str_txt_all+" "+str_txt;};
-            log(ci,"str_txt_all",str_txt_all);
+                str_txt_all=str_txt_all+str_txt;};
+            
                 
         }
-        return str_txt_all;
-    }else{return "none"}
+        //str_txt_all=str_txt_all
+        log("总"+ci+"===>",str_txt_all);
+        return str_txt_all+"\r\n";
+    }else{return "none"};
 
 }
 
@@ -128,7 +152,7 @@ function b_c_wj (html_r,t_name){
         uidjdwdang.write(html_r);
         //将文本内容写出到新建在本地的文件//一个坑,没有自动加换行符,查资料自己加上了);
         uidjdwdang.close();
-        log(w_j_mc+"更新完成!");
-        //log("ok");
+        // //log(w_j_mc+"更新完成!");
+        log("ok");
     }else{log(t_name+"不存在更新文件,跳过!")};
 }
