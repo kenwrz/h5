@@ -15,24 +15,17 @@ ui.gx_list.click(function(){
         threads.start(function() {
         //这里写你的流程代码;
         //gx_txt用于接收返回的更新列表内容,然后根据内容下载完成更新;
-        //x_z_jb(js_name)//直接测试;
+        // let gx_tq_txt=x_z_jb(js_name);
+        // const mm=gx_tq_txt.match(/<spa.*<\/s[a-z]{3}>/)[0];
+        // log(mm)
         var gx_txt="云更新";
         //log(gx_txt);
         //文件可以用读入一行,这个是文本需要分割成数组;
         name_js_arr=new Array();
         //分割文本到数组;
-        name_js_arr=gx_txt.split(/[\s\n]/);
-        //换行符的表示方法;
-        name_js_arr.forEach((item,index)=>{
-            if(!item){
-                //删除空项;
-                name_js_arr.splice(index,1);
-            }
-        });            
-        //print(name_js_arr.length);
+        name_js_arr=gx_txt.split(",");
         //1个以上的文件名,就可以更新了;
         //以下是更新下载;
-
         if(name_js_arr.length>0){
             for(i=0;i<name_js_arr.length;i++){
                 //下载并生成文件到本地;
@@ -89,30 +82,24 @@ function t_q_wb (html_r){
         var str_txt_all="";
         const re_LC=/LC/g;
         var LC_cisu_arr =html_r.match(re_LC);
-        if(LC_cisu_arr==null){log("提取失败");exit();}else{log("TD_cisu_arr",LC_cisu_arr.length);};
+        if(LC_cisu_arr==null){log("提取失败");exit();}else{log("内容行数:",LC_cisu_arr.length);};
         for(ci=1;ci<LC_cisu_arr.length+1;ci++){
             let lc_str="LC"+ci;
             let index_lc= html_r.indexOf(lc_str);
             let index_tr= html_r.indexOf("</tr>")+6
             var str_txt=html_r.substring(index_lc,index_tr);
             html_r =html_r.substring(index_tr+1,html_r.length);
-            //log(str_txt)
+            //log(str_txt);
             //有注释直接跳过;
             if(str_txt.indexOf("//")!=-1){continue;};
-            //log(ci,"str_txt",str_txt);
-            // v_txt=[lc_str,"-kos","-cce","-ent","-s1","-c1","-en","-s","-c","-k","-v"];
-            
-            // for(m=0;m<v_txt.length;m++){
-            //     var regex = v_txt[m];
-            //     //将regex=midia换成A;
-            //     str_txt = str_txt.replace(new RegExp(regex, 'g'), 'A');
-            // };
-            //log(ci+"=>",str_txt)
-            str_txt = str_txt.replace(/LC.*?-line">/g, '');
+            if(str_txt.match(/<spa.*<\/s[a-z]{3}>/)!=null){
+                str_txt = str_txt.match(/<spa.*<\/s[a-z]{3}>/)[0];}else{continue;};
+            //log(str_txt);
+            //str_txt = str_txt.replace(/LC.*?-line">/g, '');
             str_txt = str_txt.replace(/<spa.*?>/g, '');
             str_txt = str_txt.replace(/<\/s[a-z]{3}>/g, '');
-            str_txt = str_txt.replace(/<\/td>/, '\n');
-            str_txt = str_txt.replace(/<\/tr>/, '');
+            //str_txt = str_txt.replace(/<\/td>/, '\n');
+            //str_txt = str_txt.replace(/<\/tr>/, '');
             str_txt = str_txt.replace(/&lt;/g, '<');
             str_txt = str_txt.replace(/&gt;/g, '>');
             str_txt = str_txt.replace(/&quot;/g, '"');
@@ -122,7 +109,7 @@ function t_q_wb (html_r){
             //清右边空白
             str_txt =str_txt.replace(/(\s*$)/g,"");
             //str_txt=str_txt.substring(1,str_txt.indexOf("\n")+2)
-            //log(ci+"==>",str_txt);
+            log("==>",str_txt);
             if(str_txt_all==""){
                 str_txt_all=str_txt;
             }else{
@@ -131,7 +118,7 @@ function t_q_wb (html_r){
                 
         }
         //str_txt_all=str_txt_all
-        log("总"+ci+"===>",str_txt_all);
+        //log("总"+ci+"===>",str_txt_all);
         return str_txt_all+"\r\n";
     }else{return "none"};
 
