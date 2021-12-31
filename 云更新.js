@@ -1,9 +1,9 @@
 "ui";
 ui.layout(
-    <frame w="*" h="*">
-        <button layout_gravity="left|top" margin="1" w="auto" h="auto" id="cc_gx" text="cc"/>
-        <button layout_gravity="left|top" margin="1 41" w="auto" h="auto" id="cc1_gx" text="cc1"/>
-        <button layout_gravity="center" w="auto" h="auto" id="gx_list" text="更新"/>
+    <frame w="*" h="*">;
+        <button layout_gravity="left|top" margin="1" w="auto" h="auto" id="cc_gx" text="cc"/>;
+        <button layout_gravity="left|top" margin="1 41" w="auto" h="auto" id="cc1_gx" text="cc1"/>;
+        <button layout_gravity="center" w="auto" h="auto" id="gx_list" text="更新"/>;
     </frame>
 );
 
@@ -11,7 +11,7 @@ ui.layout(
 ui.gx_list.click(function(){
     //通过getText()获取输入的内容;
     var js_name = ui.gx_list.getText();
-    //ui.finish;
+    //ui.finish
         threads.start(function() {
         //这里写你的流程代码;
         //gx_txt用于接收返回的更新列表内容,然后根据内容下载完成更新;
@@ -36,7 +36,7 @@ ui.gx_list.click(function(){
         if(name_js_arr.length>0){
             for(i=0;i<name_js_arr.length;i++){
                 //下载并生成文件到本地;
-                b_c_wj(x_z_jb(name_js_arr[i]),name_js_arr[i])
+                b_c_wj(x_z_jb(name_js_arr[i]),name_js_arr[i]);
             }
         }else{toastLog("没有需要更新的文件")};
         toastLog("全部更新完成");
@@ -68,7 +68,7 @@ function x_z_jb (js_name){
         html_r =html_r.substring(index+1,html_r.length);
 
         //清除空格回车等
-        // html_r=html_r.replace(/\s*/g,"");    
+        // html_r=html_r.replace(/\s*/g,"")       
         // html_r = html_r.replace(/[\r\n]/g,"");
         return t_q_wb(html_r);
         
@@ -78,7 +78,7 @@ function x_z_jb (js_name){
 
 //处理网页文件内容,去掉不需要的标签代码;
 function t_q_wb (html_r){
-    log(html_r);
+    //log(html_r);
     //这网络上做一个提取的操作,不然都是嵌入的代码,非常乱杂;
         //var sTr = "<p><img src=\"/media/goods/images/2_20170719161405_249.jpg\" title=\"\" alt=\"2";
         //var regex = "media";//此变量可以变动;
@@ -90,10 +90,10 @@ function t_q_wb (html_r){
         const re_LC=/LC/g;
         var LC_cisu_arr =html_r.match(re_LC);
         if(LC_cisu_arr==null){log("提取失败");exit();}else{log("TD_cisu_arr",LC_cisu_arr.length);};
-        for(ci=1;ci<1/*LC_cisu_arr.length+1*/;ci++){
+        for(ci=1;ci<LC_cisu_arr.length+1;ci++){
             let lc_str="LC"+ci;
             let index_lc= html_r.indexOf(lc_str);
-            let index_tr= html_r.indexOf("</tr>")+6;
+            let index_tr= html_r.indexOf("</tr>")+6
             var str_txt=html_r.substring(index_lc,index_tr);
             html_r =html_r.substring(index_tr+1,html_r.length);
             //log(str_txt)
@@ -107,8 +107,8 @@ function t_q_wb (html_r){
             //     //将regex=midia换成A;
             //     str_txt = str_txt.replace(new RegExp(regex, 'g'), 'A');
             // };
-            //log(ci+"=>",str_txt);
-            str_txt = str_txt.replace(/<LC*?-line">/g, '');
+            //log(ci+"=>",str_txt)
+            str_txt = str_txt.replace(/LC.*?-line">/g, '');
             str_txt = str_txt.replace(/<spa.*?>/g, '');
             str_txt = str_txt.replace(/<\/s[a-z]{3}>/g, '');
             str_txt = str_txt.replace(/<\/td>/, '\n');
@@ -121,7 +121,7 @@ function t_q_wb (html_r){
             //str_txt = str_txt.replace(/&nbsp;/g, '');
             //清右边空白
             str_txt =str_txt.replace(/(\s*$)/g,"");
-            //str_txt=str_txt.substring(1,str_txt.indexOf("\n")+2);
+            //str_txt=str_txt.substring(1,str_txt.indexOf("\n")+2)
             //log(ci+"==>",str_txt);
             if(str_txt_all==""){
                 str_txt_all=str_txt;
@@ -130,7 +130,7 @@ function t_q_wb (html_r){
             
                 
         }
-        //str_txt_all=str_txt_all;
+        //str_txt_all=str_txt_all
         log("总"+ci+"===>",str_txt_all);
         return str_txt_all+"\r\n";
     }else{return "none"};
