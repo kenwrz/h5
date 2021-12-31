@@ -11,7 +11,7 @@ ui.layout(
 ui.gx_list.click(function(){
     //通过getText()获取输入的内容;
     var js_name = ui.gx_list.getText();
-    //ui.finish
+    //ui.finish;
         threads.start(function() {
         //这里写你的流程代码;
         //gx_txt用于接收返回的更新列表内容,然后根据内容下载完成更新;
@@ -61,14 +61,14 @@ function x_z_jb (js_name){
     if(r.statusCode==200){
         //提取网页内容后,交给其它需要的程序处理;
         //提取字符串之前的所有字符
-        let index = html_r.lastIndexOf("</table")
+        let index = html_r.lastIndexOf("</table");
         html_r =html_r.substring(0,index);
         //提取字符串之后的所有字符
         index = html_r.lastIndexOf("<table");
         html_r =html_r.substring(index+1,html_r.length);
 
         //清除空格回车等
-        // html_r=html_r.replace(/\s*/g,"")       
+        // html_r=html_r.replace(/\s*/g,"");    
         // html_r = html_r.replace(/[\r\n]/g,"");
         return t_q_wb(html_r);
         
@@ -89,13 +89,13 @@ function t_q_wb (html_r){
         var str_txt_all="";
         const re_LC=/LC/g;
         var LC_cisu_arr =html_r.match(re_LC);
-        if(LC_cisu_arr==null){log("提取失败");exit();}else{log("TD_cisu_arr",LC_cisu_arr.length);}
+        if(LC_cisu_arr==null){log("提取失败");exit();}else{log("TD_cisu_arr",LC_cisu_arr.length);};
         for(ci=1;ci<1/*LC_cisu_arr.length+1*/;ci++){
-            let lc_str="LC"+ci
-            let index_lc= html_r.indexOf(lc_str)
-            let index_tr= html_r.indexOf("</tr>")+6
-            var str_txt=html_r.substring(index_lc,index_tr)
-            html_r =html_r.substring(index_tr+1,html_r.length)
+            let lc_str="LC"+ci;
+            let index_lc= html_r.indexOf(lc_str);
+            let index_tr= html_r.indexOf("</tr>")+6;
+            var str_txt=html_r.substring(index_lc,index_tr);
+            html_r =html_r.substring(index_tr+1,html_r.length);
             //log(str_txt)
             //有注释直接跳过;
             if(str_txt.indexOf("//")!=-1){continue;};
@@ -107,10 +107,10 @@ function t_q_wb (html_r){
             //     //将regex=midia换成A;
             //     str_txt = str_txt.replace(new RegExp(regex, 'g'), 'A');
             // };
-            //log(ci+"=>",str_txt)
-            str_txt = str_txt.replace(/<td .*?-line">/g, '')
-            str_txt = str_txt.replace(/<spa.*?>/g, '')
-            str_txt = str_txt.replace(/<\/s[a-z]{3}>/g, '')
+            //log(ci+"=>",str_txt);
+            str_txt = str_txt.replace(/<LC*?-line">/g, '');
+            str_txt = str_txt.replace(/<spa.*?>/g, '');
+            str_txt = str_txt.replace(/<\/s[a-z]{3}>/g, '');
             str_txt = str_txt.replace(/<\/td>/, '\n');
             str_txt = str_txt.replace(/<\/tr>/, '');
             str_txt = str_txt.replace(/&lt;/g, '<');
@@ -121,7 +121,7 @@ function t_q_wb (html_r){
             //str_txt = str_txt.replace(/&nbsp;/g, '');
             //清右边空白
             str_txt =str_txt.replace(/(\s*$)/g,"");
-            //str_txt=str_txt.substring(1,str_txt.indexOf("\n")+2)
+            //str_txt=str_txt.substring(1,str_txt.indexOf("\n")+2);
             //log(ci+"==>",str_txt);
             if(str_txt_all==""){
                 str_txt_all=str_txt;
@@ -130,7 +130,7 @@ function t_q_wb (html_r){
             
                 
         }
-        //str_txt_all=str_txt_all
+        //str_txt_all=str_txt_all;
         log("总"+ci+"===>",str_txt_all);
         return str_txt_all+"\r\n";
     }else{return "none"};
